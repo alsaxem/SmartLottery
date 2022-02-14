@@ -46,7 +46,12 @@ contract SmartLottery {
     * @param _maxEth total number of tickets
     * @param _duration time period in seconds
     */
-    constructor(uint256 _maxEth, uint _duration) {}
+    constructor(uint256 _maxEth, uint _duration) {
+        owner = msg.sender;
+        ended = false;
+        maxBalance = _maxEth;
+        endTime = block.timestamp + _duration;
+    }
 
     /**
     * @notice Buying tickets with Ether.
