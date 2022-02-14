@@ -62,7 +62,10 @@ contract SmartLottery {
     /**
     * @dev generate random ticket with keccak256
     */
-    function randomTicket() internal view returns(uint256) {}
+    function randomTicket() internal view returns(uint256) {
+        uint256 number = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players)));
+        return number%address(this).balance;
+    }
 
     /**
     * @dev pick winner with random ticket
