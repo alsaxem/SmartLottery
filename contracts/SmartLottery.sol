@@ -70,7 +70,18 @@ contract SmartLottery {
     /**
     * @dev pick winner with random ticket
     */
-    function winnerPick() internal {}
+    function winnerPick() internal {
+        uint256 winNumber = randomTicket();
+        winner = players[0];
+        for(uint i = 0; i < players.length; i++) {
+            if(winNumber < ticketsBalances[players[i]]) {
+                winner = players[i];
+                break;
+            }
+            else
+                winNumber -= ticketsBalances[players[i]];
+        }
+    }
 
     /**
     * @notice The end of the lottery and the transfer of ethereum.
