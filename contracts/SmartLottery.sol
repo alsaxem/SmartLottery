@@ -99,5 +99,17 @@ contract SmartLottery {
     * @dev changing the value of a variable ended to true
     * @dev event emission LotteryEnded
     */
-    function lotteryEnd() external {}
+    function lotteryEnd() external {
+        if (address(this).balance < maxBalance && block.timestamp < endTime)
+            revert LotteryNotYetEnded();
+        if (ended)
+            revert LotteryAlreadyEnded();
+        uint256 fee = address(this).balance/10;
+        uint256 reward = address(this).balance - fee;
+        winnerPick();
+        payable(owner).transfer(fee);
+        payable(winner).transfer(reward);
+        ended = true;
+        emit LotteryEnded(winner, reward);
+    }
 }
