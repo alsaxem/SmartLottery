@@ -57,7 +57,16 @@ contract SmartLottery {
     * @notice Buying tickets with Ether.
     * @dev tokens are credited to the user's account
     */
-    function buyTickets() external payable {}
+    function buyTickets() external payable {
+        if (address(this).balance > maxBalance)
+            revert LotteryBalanceOverflow("Available tokens for purchase:", (maxBalance  + msg.value - address(this).balance));
+        if (block.timestamp > endTime || ended)
+            revert LotteryAlreadyEnded();
+        require(msg.value > 0, "Ether amount must be greater than 0");
+        if (ticketsBalances[msg.sender] == 0)
+            players.push(msg.sender);
+        ticketsBalances[msg.sender] += msg.value;
+    }
 
     /**
     * @dev generate random ticket with keccak256
