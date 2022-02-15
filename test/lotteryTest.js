@@ -25,7 +25,18 @@ describe("Lottery contract", function () {
     let duration;
 
     //Perform initial steps for all tests
-    beforeEach(async function () {});
+    beforeEach(async function () {
+
+        ethLimit = ethers.utils.parseEther("1000");
+        duration = 3600;
+        [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
+        Token = await ethers.getContractFactory("SmartLottery");
+        smartLottery = await Token.deploy(ethLimit, duration);
+        const blockNumBefore = await ethers.provider.getBlockNumber();
+        const blockBefore = await ethers.provider.getBlock(blockNumBefore);
+        deploymentTime = blockBefore.timestamp;
+    
+    });
 
     //Contract initialization testing
     describe("Deployment", function () {});
