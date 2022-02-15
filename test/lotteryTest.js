@@ -39,7 +39,23 @@ describe("Lottery contract", function () {
     });
 
     //Contract initialization testing
-    describe("Deployment", function () {});
+    describe("Deployment", function () {
+
+        it("Should set the right end time", async function () {
+          const endTime = await smartLottery.endTime();
+          expect(endTime).to.equal(duration+deploymentTime);
+        });
+        
+        it("Should set the right ticket limit", async function () {
+          const maxBalance = await smartLottery.maxBalance();
+          expect(maxBalance).to.equal(ethLimit);
+        });
+    
+        it("Should set the right owner", async function () {
+          const ownerContract = await smartLottery.owner();
+          expect(ownerContract).to.equal(owner.address);
+        });
+    });
 
     //Testing the function of buying tokens to participate in the lottery
     describe("Buying Tickets", function () {});
