@@ -58,7 +58,49 @@ describe("Lottery contract", function () {
     });
 
     //Testing the function of buying tokens to participate in the lottery
-    describe("Buying Tickets", function () {});
+    describe("Buying tickets", function () {
+
+        it("Should fail if the transaction does not contain ether", async function () {
+          await expect( 
+            smartLottery.connect(addr1).buyTickets({value: 0})
+          ).to.be.revertedWith("Ether amount must be greater than 0");
+        });
+      
+        it("Should increase user token balance after the purchase", async function () {
+          await smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("100")});
+          const tockensBalance = await smartLottery.ticketsBalances(addr1.address);
+          expect(tockensBalance).to.equal(ethers.utils.parseEther("100"));
+        });
+    
+        it("Should add new user to the list", async function () {
+          await smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("100")});
+          const players = await smartLottery.players(0);
+          expect(players).to.equal(addr1.address);
+        });
+    
+        it("Should fail if lottery time is up", async function () {
+          await network.provider.send("evm_increaseTime", [duration+1]);
+          await expect( 
+            smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("100")})
+          ).to.be.revertedWith("LotteryAlreadyEnded");
+        });
+    
+        it("Should fail if lottery has been ended", async function () {
+          await smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("1000")});
+          await smartLottery.connect(addr1).lotteryEnd();
+          await expect(
+            smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("100")})
+          ).to.be.revertedWith("LotteryAlreadyEnded");
+        });
+    
+        it("Should fail in case of ticket balance overflow", async function () {
+          await smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("1000")});
+          await expect(
+            smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("100")})
+          ).to.be.revertedWith("LotteryBalanceOverflow");
+        });
+    
+    });
 
     //Testing the Lottery End Function
     describe("Ending Lottery", function () {});
