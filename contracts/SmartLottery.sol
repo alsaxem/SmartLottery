@@ -3,18 +3,18 @@ pragma solidity >=0.8.2 < 0.9.0;
 contract SmartLottery {
 
     // Сontract owner's address.
-    address owner;
+    address public owner;
 
     // Lottery winner address.
     address public winner;
 
     // Ether limit on the balance of the contract.
     // The value is determined when the contract is initialized.
-    uint256 maxBalance;
+    uint256 public maxBalance;
 
     // Lottery end time.
     // The value is determined when the contract is initialized.
-    uint256 endTime;
+    uint256 public endTime;
 
     // List of lottery participants.
     address[] public players;
@@ -24,7 +24,7 @@ contract SmartLottery {
  
     // Set to true at the end, disallows any change.
     // By default initialized to `false`.
-    bool ended;
+    bool public ended;
 
     // Event that will be emitted on end.
     event LotteryEnded(address, uint256);
@@ -72,7 +72,7 @@ contract SmartLottery {
     * @dev generate random ticket with keccak256
     */
     function randomTicket() internal view returns(uint256) {
-        uint256 number = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players)));
+        uint number = uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players)));
         return number%address(this).balance;
     }
 
@@ -100,10 +100,10 @@ contract SmartLottery {
     * @dev event emission LotteryEnded
     */
     function lotteryEnd() external {
-        if (address(this).balance < maxBalance && block.timestamp < endTime)
-            revert LotteryNotYetEnded();
         if (ended)
             revert LotteryAlreadyEnded();
+        if (address(this).balance < maxBalance && block.timestamp < endTime)
+            revert LotteryNotYetEnded();
         uint256 fee = address(this).balance/10;
         uint256 reward = address(this).balance - fee;
         winnerPick();
