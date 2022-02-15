@@ -103,6 +103,30 @@ describe("Lottery contract", function () {
     });
 
     //Testing the Lottery End Function
-    describe("Ending Lottery", function () {});
+    describe("Ending Lottery", function () {
+
+        it("Should transfer 90% of the contract balance to the winner", async function () {
+          await smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("1000")});
+          await expect(smartLottery.lotteryEnd())
+          .to.emit(smartLottery, "LotteryEnded")
+          .withArgs(addr1.address, ethers.utils.parseEther("900"));
+        });
+    
+        it("Should be reverted with an error 'LotteryNotYetEnded'", async function () {
+          await smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("100")});
+          await expect( 
+            smartLottery.lotteryEnd()
+          ).to.be.revertedWith("LotteryNotYetEnded");
+        });
+    
+        it("Should fail if lottery has been already ended", async function () {
+          await smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("1000")});
+          await smartLottery.lotteryEnd();
+          await expect(
+            smartLottery.lotteryEnd()
+          ).to.be.revertedWith("LotteryAlreadyEnded");
+        });
+        
+      });
 
 });
