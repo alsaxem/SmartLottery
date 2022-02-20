@@ -21,7 +21,7 @@ contract SmartLottery {
     uint256 public endTime;
 
     // List of lottery participants.
-    address[] public players;
+    address[] private players;
 
     // Number of tickets assigned to a specific address.
     mapping (address => uint) public ticketsBalances;
