@@ -47,7 +47,7 @@ describe("Lottery contract", function () {
         });
         
         it("Should set the right ticket limit", async function () {
-          const maxBalance = await smartLottery.maxBalance();
+          const maxBalance = await smartLottery.remainingTickets();
           expect(maxBalance).to.equal(ethLimit);
         });
     
