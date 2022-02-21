@@ -72,12 +72,6 @@ describe("Lottery contract", function () {
           expect(tockensBalance).to.equal(ethers.utils.parseEther("100"));
         });
     
-        it("Should add new user to the list", async function () {
-          await smartLottery.connect(addr1).buyTickets({value: ethers.utils.parseEther("100")});
-          const players = await smartLottery.players(0);
-          expect(players).to.equal(addr1.address);
-        });
-    
         it("Should fail if lottery time is up", async function () {
           await network.provider.send("evm_increaseTime", [duration+1]);
           await expect( 
