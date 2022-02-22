@@ -14,7 +14,10 @@ contract SLToken is ERC20 {
     * @dev sets owner to the current sender (deployer)
     * @dev mints initial token supply and assigns it to the owner
     */
-    constructor(uint _initialSupply) ERC20("SLToken", "SLT") {}
+    constructor(uint _initialSupply) ERC20("SLToken", "SLT") {
+        _mint(msg.sender, _initialSupply);
+        owner = msg.sender;
+    }
 
     /** 
     * @notice Transfer tokens to another account.
