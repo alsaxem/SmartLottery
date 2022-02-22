@@ -12,6 +12,9 @@ contract SmartLottery {
     // The value is determined when the contract is initialized.
     uint256 public ticketLimit;
 
+    // Price lottery ticket in SLT.
+    uint256 public ticketPrice;
+
     // Remaining lottery tickets.
     // The value is determined when the contract is initialized.
     uint256 public remainingTickets;
