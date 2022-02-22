@@ -25,7 +25,12 @@ contract SLToken is ERC20 {
     * @param amount number of tokens to be transferred
     * @return true if transaction was successful
     */
-    function transfer(address recipient, uint256 amount) public override returns (bool) {}
+    function transfer(address recipient, uint256 amount) public override returns (bool) {
+        require(amount > 0, "Token amount must be greater than 0");
+        require(balanceOf(msg.sender) >= amount, "Not enough tokens");
+        _transfer(_msgSender(), recipient, amount);
+        return true;
+    }
 
     /** 
     * @notice Exchange tokens to lottery tickets.
