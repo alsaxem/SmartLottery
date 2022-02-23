@@ -78,10 +78,8 @@ contract SmartLottery {
     * @param _amount amount lottery tickets
     */
     function creditTickets(address _recipient, uint256 _amount) external {
-        if (block.timestamp > endTime || ended)
-            revert LotteryAlreadyEnded();
-        if (_amount > remainingTickets)
-            revert LotteryBalanceOverflow("Available tokens for purchase:", (remainingTickets));
+        require(block.timestamp < endTime || !ended, "Lottery Already Ended");
+        require(_amount < remainingTickets, "The requested number of tickets exceeds the remaining amount");
         if (ticketsBalances[_recipient] == 0)
             players.push(_recipient);
         SLToken sltoken = SLToken(_recipient);
