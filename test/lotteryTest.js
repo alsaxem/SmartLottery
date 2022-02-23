@@ -3,13 +3,13 @@ const { expect } = require("chai");
 
 describe("Lottery contract", function () {
     
-    //Contract factory
+    // Contract factory
     let Lottery;
 
-    //Current contract instance
+    // Current contract instance
     let smartLottery;
 
-    //Test account addresses
+    // Test account addresses
     let owner;
     let addr1;
     let addr2;
@@ -21,10 +21,10 @@ describe("Lottery contract", function () {
     //Contract initialization time
     let deploymentTime;
 
-    //Time limit for the lottery
+    // Time limit for the lottery
     let duration;
 
-    //Perform initial steps for all tests
+    // Perform initial steps for all tests
     beforeEach(async function () {
 
         ethLimit = ethers.utils.parseEther("1000");
