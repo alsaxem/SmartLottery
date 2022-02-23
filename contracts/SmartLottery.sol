@@ -59,6 +59,8 @@ contract SmartLottery {
     * @dev set endTime to the sum of the block.timestamp and duration
     * @param _maxEth total number of tickets
     * @param _duration time period in seconds
+    * @param _tokenAddr SLT token address
+    * @param _ticketPrice price lottery ticket in SLT
     */
     constructor(uint256 _maxEth, uint _duration) {
         owner = msg.sender;
