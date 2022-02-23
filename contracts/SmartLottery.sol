@@ -127,10 +127,10 @@ contract SmartLottery {
         if (remainingTickets > 0 && block.timestamp < endTime)
             revert LotteryNotYetEnded();
         uint256 reward = ticketLimit*9/10;
-        uint256 fee = address(this).balance - reward;
         winnerPick();
-        payable(winner).transfer(reward);
-        payable(owner).transfer(fee);
+        SLToken sltoken = SLToken(tokenContractAddr);
+        sltoken.transfer(winner, reward);
+        sltoken.transfer(owner, sltoken.balanceOf(address(this)));
         ended = true;
         emit LotteryEnded(winner, reward);
     }
