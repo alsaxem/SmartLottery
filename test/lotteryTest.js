@@ -15,8 +15,8 @@ describe("Lottery contract", function () {
     let addr2;
     let addrs;
 
-    //Ethereum limit for the lottery
-    let ethLimit;
+    // Ethereum limit for the lottery
+    let ticketLimit;
 
     //Contract initialization time
     let deploymentTime;
@@ -48,7 +48,7 @@ describe("Lottery contract", function () {
         
         it("Should set the right ticket limit", async function () {
           const maxBalance = await smartLottery.remainingTickets();
-          expect(maxBalance).to.equal(ethLimit);
+          expect(maxBalance).to.equal(ticketLimit);
         });
     
         it("Should set the right owner", async function () {
