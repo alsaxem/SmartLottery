@@ -62,10 +62,12 @@ contract SmartLottery {
     * @param _tokenAddr SLT token address
     * @param _ticketPrice price lottery ticket in SLT
     */
-    constructor(uint256 _maxEth, uint _duration) {
+    constructor(uint256 _maxEth, uint _duration, address _tokenAddr, uint _ticketPrice) {
         owner = msg.sender;
         ended = false;
         remainingTickets = ticketLimit = _maxEth;
+        tokenContractAddr = _tokenAddr;
+        ticketPrice = _ticketPrice;
         endTime = block.timestamp + _duration;
     }
 
