@@ -115,9 +115,9 @@ contract SmartLottery {
     }
 
     /**
-    * @notice The end of the lottery and the transfer of ethereum.
+    * @notice The end of the lottery and the transfer of SLT token.
     * @dev сommission and reward calculation
-    * @dev determination of the winner and transfer of ethereum
+    * @dev determination of the winner and transfer of SLT token
     * @dev changing the value of a variable ended to true
     * @dev event emission LotteryEnded
     */
