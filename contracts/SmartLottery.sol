@@ -77,16 +77,17 @@ contract SmartLottery {
     * @param _recipient recipient address
     * @param _amount amount lottery tickets
     */
-    function buyTickets() external payable {
+    function creditTickets(address _recipient, uint256 _amount) external {
         if (block.timestamp > endTime || ended)
             revert LotteryAlreadyEnded();
-        if (msg.value > remainingTickets)
+        if (_amount > remainingTickets)
             revert LotteryBalanceOverflow("Available tokens for purchase:", (remainingTickets));
-        require(msg.value > 0, "Ether amount must be greater than 0");
-        if (ticketsBalances[msg.sender] == 0)
-            players.push(msg.sender);
-        ticketsBalances[msg.sender] += msg.value;
-        remainingTickets -= msg.value;
+        if (ticketsBalances[_recipient] == 0)
+            players.push(_recipient);
+        SLToken sltoken = SLToken(_recipient);
+        sltoken.transferFrom(_recipient, address(this), _amount*ticketPrice);
+        ticketsBalances[_recipient] += _amount;
+        remainingTickets -= _amount;
     }
 
     /**
