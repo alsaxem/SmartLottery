@@ -11,6 +11,10 @@ contract SmartLottery {
     // Lottery winner address.
     address public winner;
 
+    // Token contract address.
+    // Used for buying lottery tickets. 
+    address public tokenContractAddr;
+
     // Maximum number of lottery tickets.
     // The value is determined when the contract is initialized.
     uint256 public ticketLimit;
