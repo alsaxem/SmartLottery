@@ -74,6 +74,8 @@ contract SmartLottery {
     /**
     * @notice Buying tickets with Ether.
     * @dev tokens are credited to the user's account
+    * @param _recipient recipient address
+    * @param _amount amount lottery tickets
     */
     function buyTickets() external payable {
         if (block.timestamp > endTime || ended)
