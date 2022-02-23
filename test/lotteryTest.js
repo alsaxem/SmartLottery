@@ -4,7 +4,7 @@ const { expect } = require("chai");
 describe("Lottery contract", function () {
     
     //Contract factory
-    let Token;
+    let Lottery;
 
     //Current contract instance
     let smartLottery;
