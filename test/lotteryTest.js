@@ -18,8 +18,14 @@ describe("Lottery contract", function () {
     // Ethereum limit for the lottery
     let ticketLimit;
 
-    //Contract initialization time
+    // Contract initialization time
     let deploymentTime;
+
+    // Token limit for the SLToken
+    let tokenLimit;
+
+    // Price lottery ticket in SLT
+    let ticketPrice;
 
     // Time limit for the lottery
     let duration;
