@@ -57,15 +57,15 @@ contract SmartLottery {
     * @dev sets owner to the current sender and default value for ended
     * @dev set remainingTickets to the maximum number of tickets
     * @dev set endTime to the sum of the block.timestamp and duration
-    * @param _maxEth total number of tickets
+    * @param _maxTicket total number of tickets
     * @param _duration time period in seconds
     * @param _tokenAddr SLT token address
     * @param _ticketPrice price lottery ticket in SLT
     */
-    constructor(uint256 _maxEth, uint _duration, address _tokenAddr, uint _ticketPrice) {
+    constructor(uint256 _maxTicket, uint _duration, address _tokenAddr, uint _ticketPrice) {
         owner = msg.sender;
         ended = false;
-        remainingTickets = ticketLimit = _maxEth;
+        remainingTickets = ticketLimit = _maxTicket;
         tokenContractAddr = _tokenAddr;
         ticketPrice = _ticketPrice;
         endTime = block.timestamp + _duration;
