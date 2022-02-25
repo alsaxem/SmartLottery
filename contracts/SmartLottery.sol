@@ -82,7 +82,7 @@ contract SmartLottery {
         require(_amount <= remainingTickets, "The requested number of tickets exceeds the remaining amount");
         if (ticketsBalances[_recipient] == 0)
             players.push(_recipient);
-        SLToken sltoken = SLToken(_recipient);
+        SLToken sltoken = SLToken(tokenContractAddr);
         sltoken.transferFrom(_recipient, address(this), _amount*ticketPrice);
         ticketsBalances[_recipient] += _amount;
         remainingTickets -= _amount;
