@@ -121,7 +121,7 @@ contract SmartLottery {
     */
     function lotteryEnd() external {
         require(!ended, "Lottery already ended");
-        require(remainingTickets < 0 && block.timestamp > endTime, "Lottery not yet ended");
+        require(remainingTickets <= 0 || block.timestamp > endTime, "Lottery not yet ended");
         uint256 reward = ticketLimit*9/10;
         winnerPick();
         SLToken sltoken = SLToken(tokenContractAddr);
