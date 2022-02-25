@@ -42,9 +42,9 @@ contract SLToken is ERC20 {
     function exchangeForTickets(address _lotteryAddr, uint256 _amount) external returns (bool) {
         require(_amount > 0, "Tikets amount must be greater than 0");
         SmartLottery sLottery = SmartLottery(_lotteryAddr);
-        uint ticketsPrice = sLottery.ticketPrice() * _amount;
+        uint256 ticketsPrice = sLottery.ticketPrice() * _amount;
         require(balanceOf(msg.sender) >= ticketsPrice, "Not enough tokens");
-        approve(_lotteryAddr, _amount);
+        approve(_lotteryAddr, ticketsPrice);
         sLottery.creditTickets(msg.sender , _amount);
         return true;
     }
