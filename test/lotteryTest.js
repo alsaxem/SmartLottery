@@ -33,7 +33,7 @@ describe("Lottery contract", function () {
     // Perform initial steps for all tests
     beforeEach(async function () {
 
-      ticketLimit = ethers.utils.parseEther("1000");
+      ticketLimit = 1000;
       duration = 3600;
       tokenLimit = BigInt(1e54);
       ticketPrice = 11;
