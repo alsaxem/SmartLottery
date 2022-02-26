@@ -152,4 +152,42 @@ describe("Lottery contract", function () {
     });
 
   });
+
+  //Testing the Lottery End Function
+  describe("Ending Lottery", function () {
+
+    it("Should end lottery without errors", async function () {
+      SLToken.transfer(addr1.address,ticketLimit*ticketPrice)
+      await SLToken.connect(addr1).exchangeForTickets(smartLottery.address,ticketLimit)
+      await smartLottery.lotteryEnd()
+      const isEnded = await smartLottery.ended()
+      await expect(isEnded).to.equal(true);
+    });
+
+    it("Should transfer 90% of lottery tokens to the winner", async function () {
+      SLToken.transfer(addr1.address,ticketLimit*ticketPrice)
+      await SLToken.connect(addr1).exchangeForTickets(smartLottery.address,ticketLimit)
+      await expect(smartLottery.lotteryEnd())
+      .to.emit(smartLottery, "LotteryEnded")
+      .withArgs(addr1.address, ticketLimit*9/10);
+      const winnerBalance = await SLToken.balanceOf(addr1.address)
+      await expect(winnerBalance).to.equal(ticketLimit*9/10);
+    });
+
+    it("Should fail if lottery can not be ended yet", async function () {
+      await expect(
+        smartLottery.lotteryEnd()
+      ).to.be.revertedWith("Lottery not yet ended");
+    });
+
+    it("Should fail if lottery has been already ended", async function () {
+      SLToken.transfer(addr1.address,ticketLimit*ticketPrice)
+      await SLToken.connect(addr1).exchangeForTickets(smartLottery.address,ticketLimit)
+      await smartLottery.lotteryEnd()
+      await expect(
+        smartLottery.lotteryEnd()
+      ).to.be.revertedWith("Lottery already ended");
+    });
+
+  });
 });
