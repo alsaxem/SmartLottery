@@ -91,4 +91,26 @@ describe("Lottery contract", function () {
       });
     });
 
+    //Testing the function of buying tokens to participate in the lottery
+    describe("Token transfer", function () {
+
+      it("Should fail if the transaction does not contain token", async function () {
+        await expect(
+          SLToken.connect(addr1).transfer(addr2.address,0)
+        ).to.be.revertedWith("Token amount must be greater than 0");
+      });
+    
+      it("Should increase user token balance after the purchase", async function () {
+        await SLToken.transfer(addr1.address,111);
+        const tockensBalance = await SLToken.balanceOf(addr1.address);
+        expect(tockensBalance).to.equal(111);
+      });
+
+      it("Should fail if the user balance does not contain enough tokens", async function () {
+        await expect(
+          SLToken.connect(addr1).transfer(addr2.address,1)
+        ).to.be.revertedWith("Not enough tokens");
+      });
+
+  });
 });
