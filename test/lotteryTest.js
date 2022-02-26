@@ -112,5 +112,44 @@ describe("Lottery contract", function () {
         ).to.be.revertedWith("Not enough tokens");
       });
 
+    });
+
+  //Testing the function of buying tokens to participate in the lottery
+  describe("Exchange tokens for lottery tickets", function () {
+
+    it("Should fail if the transaction does not contain token", async function () {
+      await expect(
+        SLToken.connect(addr1).exchangeForTickets(smartLottery.address,0)
+      ).to.be.revertedWith("Tikets amount must be greater than 0");
+    });
+
+    it("Should fail if the user's balance is below the required value", async function () {
+      await expect(
+        SLToken.connect(addr1).exchangeForTickets(smartLottery.address,1)
+      ).to.be.revertedWith("Not enough tokens");
+    });
+
+    it("Should increase user token balance after the purchase", async function () {
+      SLToken.transfer(addr1.address,11000)
+      await SLToken.connect(addr1).exchangeForTickets(smartLottery.address,100)
+      const userBalance = await smartLottery.ticketsBalances(addr1.address)
+      await expect(userBalance).to.equal(100);
+    });
+
+    it("Should fail if the time limit has been exceeded", async function () {
+      SLToken.transfer(addr1.address,ticketLimit*ticketPrice)
+      await network.provider.send("evm_increaseTime", [duration+1]);
+      await expect(
+        SLToken.connect(addr1).exchangeForTickets(smartLottery.address,ticketLimit)
+      ).to.be.revertedWith("Lottery Already Ended");
+    });
+
+    it("Should fail if the ticket balance is exceeded", async function () {
+      SLToken.transfer(addr1.address,(ticketLimit+1)*ticketPrice)
+      await expect(
+        SLToken.connect(addr1).exchangeForTickets(smartLottery.address,ticketLimit+1)
+      ).to.be.revertedWith("The requested number of tickets exceeds the remaining amount");
+    });
+
   });
 });
